@@ -1,11 +1,19 @@
-def criar_usuario(nome, data_nasc, cpf, endereco):
-    print("Criar usuário")
+import textwrap
 
-def criar_conta_corrente():
-    print("Criar conta corrente")
+def menu():
+    menu = '''\n
+    ============== MENU ==============
+    [d]\tDepositar
+    [s]\tSacar
+    [e]\tExtrato
+    [nc]\tNova conta
+    [lc]\tListar contas
+    [nu]\tNovo usuário
+    [q]\tSair
+    => '''
+    return input(textwrap.dedent(menu))
 
-# Função para depósito
-def depositar(saldo, valor, extrato):
+def depositar(saldo, valor, extrato, /):
     
     if(valor > 0):
         saldo += valor
@@ -16,7 +24,6 @@ def depositar(saldo, valor, extrato):
 
     return saldo, print(extrato)
 
-# Funções para saque
 def verificar_limite_saque(numero_saque, limite_qtd_saque):
     
     if(numero_saque >= limite_qtd_saque):
@@ -59,58 +66,96 @@ def sacar(*, saldo, valor, qtd_saque, limite_qtd_saque, limite_saque, extrato):
     
     return qtd_saque, saldo, print(extrato)
 
-# Função para extrato    
 def exibir_extrato_bancario(extrato, /, *, saldo):
     print("============= EXTRATO =============")
     extrato = f"O saldo da conta: R${saldo:.2f}"
     return saldo, print(extrato)
 
-#----------------------------------------------------------------------------
+def criar_usuario(usuarios):
+    cpf = input("Informe seu CPF (somente números): ")
+    usuario = filtrar_usuario(cpf, usuarios)
 
-menu = '''
-DIGITE A OPÇÃO DESEJADA:
-
-[d] - Depositar
-[s] - Sacar
-[e] - Extrato Bancário
-[q] - Sair
-
-=> '''
-
-saldo_conta = 0
-valor_limite_saque = 500
-extrato = ''
-numero_saques = 0
-LIMITES_SAQUES = 3
-
-while True:
+    if usuario:
+        print("\n### Atenção: Usuário com esse CPF já cadastrado em novo sistema! ###")
+        return
     
-    opcao = input(menu)
+    nome = input("Digite seu nome completo: ")
+    data_nascimento = input("Digite sua data de nascimento (dd-mm-aaaa): ")
+    endereco = input("Informe seu endereco (Logradouro, n° - bairro - cidade/sigla do Estado): ")
 
-    if opcao == 'd':
+    usuarios.append = ({"nome": nome, "cpf": cpf, "data_nascimento": data_nascimento, "endereco": endereco})
 
-        valor_deposito = float(input('Informe o valor do depósito: R$'))
+    print("*** Usuário criado com sucesso ***")
 
-        saldo_conta, extrato = depositar(saldo_conta, valor_deposito, extrato)
+def filtrar_usuario(cpf, usuarios):
+    usuarios_filtrados = [usuario for usuario in usuarios if usuario["cpf"] == cpf]
+    return usuarios_filtrados[0] if usuarios_filtrados else None
+
+def criar_conta_corrente(agencia, numero_conta, usuarios):
+    cpf = input("Informe o seu CPF: ")
+    usuario = filtrar_usuario(cpf, usuarios)
+
+    if usuario:
+        print("*** Sua conta foi criada com sucesso! ***")
+        return {"agencia": agencia, "numero_conta": numero_conta, "usuario": usuario}
+    
+    print("### Usuário não encontrado! POr favor, realize seu cadastro! ###")
+
+def main():
+    LIMITES_SAQUES = 3
+    NUMERO_AGENCIA = "0001"
+
+    saldo_conta = 0
+    valor_limite_saque = 500
+    extrato = ''
+    numero_saques = 0
+    
+    usuarios = []
+    contas = []
+
+    while True:
+        
+        opcao = menu()
+
+        if opcao == 'd':
+
+            valor_deposito = float(input('Informe o valor do depósito: R$'))
+
+            saldo_conta, extrato = depositar(saldo_conta, valor_deposito, extrato)
+                
+        elif opcao == 's':
             
-    elif opcao == 's':
-        
-        valor_saque = float(input('Informe o valor do saque: R$'))
+            valor_saque = float(input('Informe o valor do saque: R$'))
 
-        numero_saques, saldo_conta, extrato = sacar(
-            saldo=saldo_conta, 
-            valor=valor_saque, 
-            qtd_saque=numero_saques, 
-            limite_qtd_saque=LIMITES_SAQUES, 
-            limite_saque=valor_limite_saque, 
-            extrato=extrato
-        )
-        
-    elif opcao == 'e':
-        extrato, saldo_conta = exibir_extrato_bancario(extrato, saldo=saldo_conta)
+            numero_saques, saldo_conta, extrato = sacar(
+                saldo=saldo_conta, 
+                valor=valor_saque, 
+                qtd_saque=numero_saques, 
+                limite_qtd_saque=LIMITES_SAQUES, 
+                limite_saque=valor_limite_saque, 
+                extrato=extrato
+            )
+            
+        elif opcao == 'e':
+            extrato, saldo_conta = exibir_extrato_bancario(extrato, saldo=saldo_conta)
 
-    elif opcao == 'q':
-        break
-    
-    else:
-        print("Opcão inválida! Tente novamente!")
+        elif opcao == 'q':
+            break
+
+        elif opcao == 'nu':
+            criar_usuario(usuarios)
+
+        elif opcao == 'nc':
+            numero_conta = len(contas) + 1
+            conta = criar_conta_corrente(NUMERO_AGENCIA, numero_conta, usuarios)
+
+            if conta:
+                contas.append(conta)
+        
+        else:
+            print("Opcão inválida! Tente novamente!")
+
+main()
+
+
+
