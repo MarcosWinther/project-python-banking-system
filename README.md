@@ -1,6 +1,8 @@
 # 👨‍💻 Sistema Bancário em Python
 
-Este projeto é um sistema bancário simples, implementado em Python, que permite ao usuário realizar operações básicas como depósito, saque e consulta de saldo.
+Este projeto é um sistema bancário que permite a criação de clientes, contas, e a realização de transações como depósito, saque e consulta de extrato. O sistema foi projetado utilizando conceitos de orientação a objetos como herança, polimorfismo e classes abstratas.
+
+### Sobre esse Projeto:
 
 O desafio desse projeto foi proposto no curso ``Criando um Sistema Bancário com Python`` ministrado pelo expert [Guilherme Carvalho](https://www.linkedin.com/in/decarvalhogui/) na trilha de Python do Bootcamp "[NTT DATA](https://www.linkedin.com/company/nttdata/posts/?feedView=all) - Engenharia de Dados com Python" disponível na plataforma da [DIO](https://www.dio.me/).
 
@@ -13,21 +15,44 @@ O desafio desse projeto foi proposto no curso ``Criando um Sistema Bancário com
 
 ## 🛠 Funcionalidades
 
-- **Depósito:** O usuário pode adicionar fundos à sua conta.
-- **Saque:** O usuário pode sacar dinheiro da sua conta, respeitando o limite de saques diários e o valor máximo permitido por saque.
-- **Extrato:** O usuário pode visualizar o saldo atual da conta.
-- **Sair:** O usuário pode encerrar o programa.
+- **Depósito:** O cliente pode adicionar fundos à sua conta.
+- **Saque:** O cliente pode sacar dinheiro, respeitando o saldo disponível e o limite de saques diários.
+- **Extrato:** Exibe todas as transações realizadas na conta e o saldo atual.
+- **Cadastro de Cliente:** Permite cadastrar novos clientes no sistema.
+- **Criação de Conta:** Permite criar uma nova conta para clientes existentes.
+- **Listar Contas:** Exibe todas as contas cadastradas no banco.
+- **Sair:** Encerra o programa.
 
 
 ## ⚠ Regras do Sistema
 
 - **Depósito:** O valor deve ser positivo.
 - **Saque:** 
-  - O número máximo de saques por dia é 3.
+  - O valor deve ser menor ou igual ao saldo disponível.
+  - O número máximo de saques diários é 3.
   - O valor máximo permitido por saque é de R$500,00.
-  - O saldo da conta deve ser suficiente para realizar o saque.
-- **Extrato:** Exibe o saldo atual da conta.
+- **Extrato:** Exibe todas as transações da conta (saques e depósitos) e o saldo atual.
+
+
+## 🔨 Melhorias Implementadas
+
+- **Orientação a Objetos (OO):** A estrutura foi refatorada utilizando classes como `Cliente`, `Conta`, e `Transacao`.
+- **Classes Abstratas:** A classe `Transacao` foi criada como abstrata para definir uma interface para as transações de depósito e saque.
+- **Herança:** As classes `PessoaFisica` herda de `Cliente` e `ContaCorrente` herda de `Conta`.
+- **Histórico de Transações:** O sistema agora registra todas as transações (saques e depósitos) associadas a uma conta.
+- **Validação de CPF:** As transações agora validam o CPF do cliente antes de serem realizadas.
   
+
+## 📂 Estrutura do Código
+
+- **Cliente:** Classe base para representar clientes, contendo o endereço e uma lista de contas.
+- **PessoaFisica:** Subclasse de `Cliente`, com atributos como nome, CPF e data de nascimento.
+- **Conta:** Classe base que contém o saldo, número da conta, agência e um histórico de transações.
+- **ContaCorrente:** Subclasse de `Conta`, com limites de saque e número máximo de saques diários.
+- **Transacao (Abstrata):** Define uma interface para transações financeiras como saque e depósito.
+- **Saque e Deposito:** Implementam as transações financeiras que são registradas no histórico da conta.
+- **Historico:** Classe que registra todas as transações realizadas por uma conta.
+
 
 ## 👨‍🔧 Como Executar
 
@@ -47,29 +72,20 @@ O desafio desse projeto foi proposto no curso ``Criando um Sistema Bancário com
 Ao executar o programa, você verá o seguinte menu:
 
 ````sh
-DIGITE A OPÇÃO DESEJADA:
-
-[d] - Depositar 
-[s] - Sacar 
-[e] - Extrato Bancário 
-[q] - Sair
+============== MENU ==============
+[d]  Depositar
+[s]  Sacar
+[e]  Extrato
+[nc] Nova conta
+[lc] Listar contas
+[nu] Novo cliente
+[q]  Sair
 
 =>
 ````
 
-
 Você pode escolher a operação desejada digitando a letra correspondente.
 
-
-## 📂 Estrutura do Código
-
-- **exibir_saldo_conta(saldo):** Função que exibe o saldo atual da conta.
-- **menu:** String que contém as opções do menu para interação com o usuário.
-- **saldo_conta:** Variável que armazena o saldo atual da conta.
-- **valor_limite_saque:** Limite máximo de valor por saque.
-- **numero_saques:** Contador do número de saques realizados.
-- **LIMITES_SAQUES:** Limite máximo de saques por dia.
-- **Loop principal:** Onde as interações com o usuário acontecem, capturando a escolha e executando as operações correspondentes.
 
 ## 🤝 Contribuição
 
